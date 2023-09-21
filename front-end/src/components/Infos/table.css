@@ -1,0 +1,18 @@
+.column{
+    width: 15vw;
+    max-width: 20vw;
+}
+
+table {
+    border-collapse: collapse;
+    font-size: 13px;
+    width: fit-content;
+  }
+
+.tabelWidth{
+    width: fit-content;
+}
+
+h2{
+    font-size: 20px;
+}

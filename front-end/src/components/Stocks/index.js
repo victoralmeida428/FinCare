@@ -47,7 +47,7 @@ function CreateChart(props) {
                     }
                     setTrace(traces)
                     setDate(date)
-                    setTitle(props.stocks.replace('_ponto_', '.').replace('_acento_', '^').toUpperCase())
+                    setTitle(props.stocks.replace('_ponto_', '.').replace('_acento_', '^').toUpperCase().replace('-', ', '.replace('-', '')))
                     setError(0)
                 }
                 else {

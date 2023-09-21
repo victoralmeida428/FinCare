@@ -5,6 +5,7 @@ import CreateChart from '../components/Stocks';
 import { useLocation } from 'react-router-dom';
 import { Col, Row, Stack } from 'react-bootstrap';
 import GetInfos from '../components/Infos';
+import  './style.css'
 
 function HomePage(props) {
     const location = useLocation()
@@ -67,7 +68,7 @@ function HomePage(props) {
             onchange: GetEnd
         }]
     return (
-        <>
+        <div className='font'>
             <Menu />
             <Stack className='mt-5' direction='horizontal' gap={5} >
                 <Formulario fields={inputs} btn={false} />
@@ -77,8 +78,7 @@ function HomePage(props) {
                     <CreateChart stocks={stock} end={end} start={start} />
             </Row>
 
-
-        </>
+        </div>
     )
 
 }

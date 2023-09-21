@@ -4,12 +4,13 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart as regHeart } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
+import  './table.css'
 
 function rows(keys, stocks, stockData){
     const row = keys.map(key=>(
         <tr>
-            <td>{key}</td>
-            {stocks.map(e=><td>{stockData[key][e]}</td>)}
+            <td className={'column'}>{key}</td>
+            {stocks.map(e=><td className={'column'}>{stockData[key][e]}</td>)}
         </tr>
     ))
     return (
@@ -27,14 +28,14 @@ function StockInfoTable({ stockData }) {
     
     if (keys.length>0){
         stocks = Object.keys(stockData[keys[0]])
-        stocks.map((s)=>{th.push(<td>{s} <FontAwesomeIcon icon={solidHeart} style={{color: "#fa0000",}} /></td>)})
+        stocks.map((s)=>{th.push(<td>{s} <FontAwesomeIcon icon={regHeart} style={{color: "#fa0000",}} /></td>)})
         body = rows(keys, stocks, stockData)
         
     }
     return (
             <div>
-            <h2>Stocks Info</h2>
-            <Table hover striped>
+            <h2>Stocks Informations</h2>
+            <table className='tabelWidth table table-striped table-hover'>
                 <thead>
                 <tr>
                     <th>Info</th>
@@ -44,7 +45,7 @@ function StockInfoTable({ stockData }) {
                 </thead>
                 <tbody>
                 </tbody>
-            </Table>
+            </table>
             </div>
         );
     
