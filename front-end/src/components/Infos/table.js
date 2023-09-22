@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Table } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart as regHeart } from '@fortawesome/free-regular-svg-icons';
+import { prefix, faHeart as regHeart } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
 import  './table.css'
 
@@ -25,16 +25,26 @@ function StockInfoTable({ stockData }) {
     let stocks = undefined
     let body = undefined
     let th = []
-    
+    const [heart, setHeart] = useState(regHeart)
+    const heartClick = (e) => {
+        e.preventDefault()
+        if (e.target.getAttribute('data-prefix') === 'far') {
+            setHeart(solidHeart)
+        }
+        else {
+            setHeart(regHeart)
+        }
+        }
     if (keys.length>0){
         stocks = Object.keys(stockData[keys[0]])
-        stocks.map((s)=>{th.push(<td>{s} <FontAwesomeIcon icon={regHeart} style={{color: "#fa0000",}} /></td>)})
+        stocks.map((s)=>{th.push(<td>{s} <FontAwesomeIcon onClick={heartClick} className={s} icon={heart} style={{ color: "#fa0000" }} /> </td>)})
         body = rows(keys, stocks, stockData)
         
     }
     return (
             <div>
             <h2>Stocks Informations</h2>
+            <div className='table'>
             <table className='tabelWidth table table-striped table-hover'>
                 <thead>
                 <tr>
@@ -46,6 +56,7 @@ function StockInfoTable({ stockData }) {
                 <tbody>
                 </tbody>
             </table>
+            </div>
             </div>
         );
     
