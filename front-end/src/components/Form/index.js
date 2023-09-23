@@ -9,7 +9,7 @@ function Formulario (props){
         <form method='GET' className="p-2">
             <Stack direction="horizontal" gap={5}>
             {forms}
-            <Button variant="outline-success" type="submit">Buscar</Button>
+            <Button variant="outline-success" type="submit">Submit</Button>
             </Stack>
             
         </form>

@@ -49,7 +49,7 @@ def info_stocks(request, stocks):
     infos = []
     for stock in stocksList:
         ticker = yf.Ticker(stock)
-        ticker.info['governanceEpochDate'] = dt.datetime.fromtimestamp(ticker.info['governanceEpochDate']).strftime("%d/%m/%Y")
+        ticker.info['governanceEpochDate'] = dt.datetime.fromtimestamp(ticker.info.get('governanceEpochDate')).strftime("%d/%m/%Y")
         infos.append((stock, ticker.info))
         
         

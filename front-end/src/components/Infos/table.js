@@ -2,19 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { prefix, faHeart as regHeart } from '@fortawesome/free-regular-svg-icons';
-import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
 import  './table.css'
-import axios from 'axios';
 
-
-
-const head = (stockData, icon)=>{
+const head = (stockData, fav)=>{
     if (stockData.data) {
         return(
             Object.keys(stockData.data[0]).map((col)=>{
+                console.log(fav[col]);
                 return (
-                    <th key={col} className='text-center'>{col}{col==='info'? '': <FontAwesomeIcon icon={icon} style={{color:'red'}} />} </th>
+                    <th key={col} className='text-center'>
+                        {col}{col==='info'? '': <FontAwesomeIcon icon={fav[col]} style={{color:'red'}} />}
+                    </th>
                 )
             })
         )}
@@ -43,7 +41,7 @@ export default function StockInfoTable(props) {
     return(
         <Table className='table tabelWidth' hover={true} striped={true}>
             <thead>
-                {head(props.stockData, props.icon)}
+                {head(props.stockData, props.fav)}
             </thead>
             <tbody>
                 {body(props.stockData)}
