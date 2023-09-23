@@ -39,23 +39,26 @@ def stocks(request, stocks: str, start, end):
 
 def info_stocks(request, stocks):
     data = {}
-    stocksList = patternStocks(stocks)
-    for stock in stocksList:
-        ticker = yf.Ticker(stock)
-        info = ticker.info
-        name_info = {'marketCap': 'Market Cap', 'totalDebt': 'Total Debt',
+    lista = []
+    name_info = {'marketCap': 'Market Cap', 'totalDebt': 'Total Debt',
                      'enterpriseValue':'Enterprise Value',
                      'ebitda': 'EBITDA', 'trailingEps': 'Trailing Eps', 'floatShares': 'Float Shares',
                      'sharesOutstanding':'Shares Outstanding', 'previousClose':'Previous Close',
                      'governanceEpochDate': 'Governance Epoch Date'}
-        info['governanceEpochDate'] = dt.datetime.fromtimestamp(info['governanceEpochDate']).strftime("%Y-%m-%d")
-        for key, value in name_info.items():
-            if data.get(value):
-                data[value][stock]= f'{info.get(key):,}'  if (isinstance(info.get(key), int)|isinstance(info.get(key), float)) else info.get(key)
-                print(data[value][stock]) 
-            else:
-                data[value] = {stock:f'{info.get(key):,}'  if (isinstance(info.get(key), int)|isinstance(info.get(key), float)) else info.get(key)}
-
+    stocksList = patternStocks(stocks)
+    infos = []
+    for stock in stocksList:
+        ticker = yf.Ticker(stock)
+        ticker.info['governanceEpochDate'] = dt.datetime.fromtimestamp(ticker.info['governanceEpochDate']).strftime("%d/%m/%Y")
+        infos.append((stock, ticker.info))
+        
+        
+    for key, value in name_info.items():
+        dic = {'info': value}
+        for (stock, info) in infos:
+            dic[stock]= f'{info.get(key):,}'  if (isinstance(info.get(key), int)|isinstance(info.get(key), float)) else info.get(key)
+        lista.append(dic)
+    data['data'] = lista
     return JsonResponse(data)
 
 class ListWalletStocks(ListAPIView):
@@ -63,5 +66,5 @@ class ListWalletStocks(ListAPIView):
     def get_queryset(self):
         queryset = WalletModel.objects.filter(username_id=self.kwargs['pk'])
         return queryset
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     serializer_class = ListStockSerializer

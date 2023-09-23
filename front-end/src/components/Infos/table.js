@@ -1,65 +1,53 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { prefix, faHeart as regHeart } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
 import  './table.css'
+import axios from 'axios';
 
-function rows(keys, stocks, stockData){
-    const row = keys.map(key=>(
-        <tr>
-            <td className={'column'}>{key}</td>
-            {stocks.map(e=><td className={'column'}>{stockData[key][e]}</td>)}
-        </tr>
-    ))
-    return (
-        row
-    )
+
+
+const head = (stockData, icon)=>{
+    if (stockData.data) {
+        return(
+            Object.keys(stockData.data[0]).map((col)=>{
+                return (
+                    <th key={col} className='text-center'>{col}{col==='info'? '': <FontAwesomeIcon icon={icon} style={{color:'red'}} />} </th>
+                )
+            })
+        )}
+    }
+
+const body = (stockData) => {
+    if (stockData.data) {
+        const keys = Object.keys(stockData.data[0])
+        
+        return (
+            stockData.data.map((data)=>
+
+                    <tr>
+                        {
+                        keys.map((col)=><td className='text-center'>{data[col]}</td>)
+                        }
+                    </tr>
+                    )
+        )
+
+    }
 }
 
+export default function StockInfoTable(props) {
 
-function StockInfoTable({ stockData }) {
-    // Obter as   chaves (valores) do objeto data
-    const keys = Object.keys(stockData);
-    let stocks = undefined
-    let body = undefined
-    let th = []
-    const [heart, setHeart] = useState(regHeart)
-    const heartClick = (e) => {
-        e.preventDefault()
-        if (e.target.getAttribute('data-prefix') === 'far') {
-            setHeart(solidHeart)
-        }
-        else {
-            setHeart(regHeart)
-        }
-        }
-    if (keys.length>0){
-        stocks = Object.keys(stockData[keys[0]])
-        stocks.map((s)=>{th.push(<td>{s} <FontAwesomeIcon onClick={heartClick} className={s} icon={heart} style={{ color: "#fa0000" }} /> </td>)})
-        body = rows(keys, stocks, stockData)
-        
-    }
-    return (
-            <div>
-            <h2>Stocks Informations</h2>
-            <div className='table'>
-            <table className='tabelWidth table table-striped table-hover'>
-                <thead>
-                <tr>
-                    <th>Info</th>
-                    {th}
-                </tr>
-                    {body}
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-            </div>
-            </div>
-        );
-    
-    }
-
-    export default StockInfoTable;
+    return(
+        <Table className='table tabelWidth' hover={true} striped={true}>
+            <thead>
+                {head(props.stockData, props.icon)}
+            </thead>
+            <tbody>
+                {body(props.stockData)}
+            </tbody>
+        </Table>
+    )
+}
