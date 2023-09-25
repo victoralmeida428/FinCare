@@ -21,7 +21,7 @@ export default function GetInfos(props) {
         }
 
     }
-    setInterval(getInfo, 3000)
+    setInterval(getInfo, 5000)
 
     async function getFav() {
         try {
@@ -39,7 +39,7 @@ export default function GetInfos(props) {
           console.log(err);
         }
       }
-    setInterval(getFav, 3000)
+    setInterval(getFav, 5000)
 
     return(
         <StockInfoTable stockData={data} icon={regHeart} fav={fav}/>

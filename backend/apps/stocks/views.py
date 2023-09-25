@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 import yfinance as yf
 import datetime as dt
-from rest_framework.generics import ListAPIView
+from rest_framework import generics
 from .models import WalletModel
 from .serializer import *
 from django.contrib.auth.models import User
@@ -61,10 +61,18 @@ def info_stocks(request, stocks):
     data['data'] = lista
     return JsonResponse(data)
 
-class ListWalletStocks(ListAPIView):
-    
+class ListWalletStocks(generics.ListAPIView): 
     def get_queryset(self):
         queryset = WalletModel.objects.filter(username_id=self.kwargs['pk'])
         return queryset
     # permission_classes = [IsAuthenticated]
     serializer_class = ListStockSerializer
+
+class DeleteWalletStocks(generics.DestroyAPIView):
+    serializer_class = ListStockSerializer
+    
+    def get_queryset(self):
+        return super().get_serializer().Meta.model.objects.filter(username_id=self.kwargs['pk'])
+    
+    def delete(self, request, *args, **kwargs):
+        return super().delete(request, *args, **kwargs)
