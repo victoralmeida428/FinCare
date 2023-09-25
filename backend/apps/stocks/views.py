@@ -14,28 +14,32 @@ def patternStocks(stocks):
     return lStocks
 
 def stocks(request, stocks: str, start, end):
-    data ={}
+    data =[]
     lStocks = patternStocks(stocks)
-    if len(lStocks)==1:
-        ticker = yf.Ticker(lStocks[0])
-        df = ticker.history(start=start, end=end)
-        data['close'] = list(df.Close.values)
-        data['date'] = list(df.index)
-        data['open'] = list(df.Open.values)
-        data['high'] = list(df.High.values)
-        data['low'] = list(df.Low.values)
-    else:
-        tickers =yf.Tickers(lStocks)
-        df = tickers.history(start=start, end=end)
-        df = (df.max()-df)/(df.max()-df.min())
-        close_dic = {col:list(df.Close[col].values) for col in df.Close.columns}
-        data['date'] = list(df.index)
-        data.update(close_dic)
+    print(lStocks)
+    ticker = yf.Tickers(lStocks)
+    df = ticker.history(start=start, end=end)
+    print(df)
+    for col in df.Close.columns:
+        dic = {'stock': col}
+        dic['close'] = list(df.Close[col].values)
+        dic['open'] = list(df.Open[col].values)
+        dic['date'] = list(df.index)
+        dic['high'] = list(df.High[col].values)
+        dic['low'] = list(df.Low[col].values)
+        data.append(dic)
+    # else:
+    #     tickers = yf.Tickers(lStocks)
+    #     df = tickers.history(start=start, end=end)
+    #     df = (df.max()-df)/(df.max()-df.min())
+    #     close_dic = {col:list(df.Close[col].values) for col in df.Close.columns}
+    #     data['date'] = list(df.index)
+    #     data.update(close_dic)
         
         
     
     
-    return JsonResponse(data)
+    return JsonResponse({'data': data})
 
 def info_stocks(request, stocks):
     data = {}
@@ -48,9 +52,10 @@ def info_stocks(request, stocks):
     stocksList = patternStocks(stocks)
     infos = []
     for stock in stocksList:
-        ticker = yf.Ticker(stock)
-        ticker.info['governanceEpochDate'] = dt.datetime.fromtimestamp(ticker.info.get('governanceEpochDate')).strftime("%d/%m/%Y")
-        infos.append((stock, ticker.info))
+        if not str(stock).startswith('^'):
+            ticker = yf.Ticker(stock)
+            ticker.info['governanceEpochDate'] = dt.datetime.fromtimestamp(ticker.info.get('governanceEpochDate',11111111111)).strftime("%d/%m/%Y") if ticker.info.get('governanceEpochDate',False) else None
+            infos.append((stock, ticker.info))
         
         
     for key, value in name_info.items():

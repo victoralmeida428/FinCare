@@ -2,6 +2,10 @@ import React from 'react';
 import Plot from 'react-plotly.js';
 
 function Chart(props)  {
+    var plots = []
+    for (const trace of props.traces){
+      console.log(trace);
+    }
     return (
       <Plot
         data={props.traces}

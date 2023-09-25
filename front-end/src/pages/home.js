@@ -19,8 +19,6 @@ function HomePage(props) {
     const date = (y, m, d) => { return (`${y}-${month(m)}-${d}`) }
     const [stock, setStock] = useState(stocks_url?stocks_url:'_acento_BVSP')
     const startDate = new Date(begin.setDate(begin.getDate() - 60))
-    console.log('start', startDate);
-    console.log('end', today);
     const [start, setStart] = useState(start_url ? start_url : date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate()))
     const [end, setEnd] = useState(end_url ? end_url : date(today.getFullYear(), today.getMonth(), today.getDate()))
     const GetStock = (value) => {
@@ -30,8 +28,7 @@ function HomePage(props) {
         .replace(' ', '-')
         .replace(',', '-')
         .replace(';', '-')
-
-        setStock(`${stocks_url?stocks_url:''}, ${field}`);
+        setStock(`${field} ${stocks_url?stocks_url:''}`);
 
     }
     const GetStart = (value) => {

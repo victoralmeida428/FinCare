@@ -18,10 +18,11 @@ export default function GetInfos(props) {
 
         } catch(err){
             console.log(err);
+            setError(error+1)
         }
 
     }
-    setInterval(getInfo, 5000)
+
 
     async function getFav() {
         try {
@@ -35,11 +36,15 @@ export default function GetInfos(props) {
           });
       
           setFav(dados);
+          console.log(dados);
         } catch (err) {
           console.log(err);
+          setError(error+1)
         }
       }
-    setInterval(getFav, 5000)
+    
+    useEffect(()=>{getFav()}, [url, error])
+    useEffect(()=>{getInfo()}, [url, error])
 
     return(
         <StockInfoTable stockData={data} icon={regHeart} fav={fav}/>

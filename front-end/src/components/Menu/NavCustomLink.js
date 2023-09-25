@@ -5,7 +5,7 @@ import {NavItem, NavLink} from "react-bootstrap";
 function NavCustomLink(props) {
 
     return (
-        <NavItem key={props.url}>
+        <NavItem key={props.key}>
             <NavLink
                 key={props.url}
                 className='link'

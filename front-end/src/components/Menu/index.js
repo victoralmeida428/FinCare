@@ -13,8 +13,9 @@ function Menu () {
         '4': {'url':'#####', 'children':'Wallet'},
         '5': {'url':'######', 'children':'Login'},
     }
-    for (const [_, props] of Object.entries(menu)) {
+    for (const [i, props] of Object.entries(menu)) {
         links.push(<NavCustomLink url={props.url}
+                                  key = {i}
                                   children={props.children} 
                                   active={setMenuActive} />)
     }
