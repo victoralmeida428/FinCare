@@ -36,18 +36,21 @@ export default function GetInfos(props) {
           });
       
           setFav(dados);
-          console.log(dados);
         } catch (err) {
           console.log(err);
           setError(error+1)
         }
       }
-    
+    const favClick = (e)=>{
+      const svg = e.target.tagName=='path'?e.target.parentElement:e.target
+      const stock = svg.parentElement.innerText
+      console.log()
+    }
     useEffect(()=>{getFav()}, [url, error])
     useEffect(()=>{getInfo()}, [url, error])
 
     return(
-        <StockInfoTable stockData={data} icon={regHeart} fav={fav}/>
+        <StockInfoTable stockData={data} icon={regHeart} fav={fav} clickAction={favClick}/>
     )
 
 }

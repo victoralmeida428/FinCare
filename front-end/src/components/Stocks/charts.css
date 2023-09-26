@@ -1,0 +1,11 @@
+/* Adicione essas classes no seu arquivo CSS */
+.stack {
+    width: 50%; /* Cada gráfico ocupará 50% da largura da tela */
+    float: left; /* Alinhe os gráficos à esquerda */
+    box-sizing: border-box; /* Evite que as margens causem quebras de linha */
+    padding: 10px; /* Espaçamento entre os gráficos */
+  }
+  
+.chart:nth-child(2n) {
+clear: left; /* A cada dois gráficos, limpe o alinhamento à esquerda para criar uma nova linha */
+}

@@ -16,18 +16,28 @@ def patternStocks(stocks):
 def stocks(request, stocks: str, start, end):
     data =[]
     lStocks = patternStocks(stocks)
-    print(lStocks)
-    ticker = yf.Tickers(lStocks)
-    df = ticker.history(start=start, end=end)
-    print(df)
-    for col in df.Close.columns:
-        dic = {'stock': col}
-        dic['close'] = list(df.Close[col].values)
-        dic['open'] = list(df.Open[col].values)
+    
+    ticker = yf.Tickers(lStocks) if len(lStocks)>1 else yf.Ticker(lStocks[0])
+    
+    df = ticker.history(start=start, end=end).dropna()
+    if len(lStocks)>1:
+        for col in df.Close.columns:
+            dic = {'stock': col}
+            dic['close'] = list(df.Close[col].values)
+            dic['open'] = list(df.Open[col].values)
+            dic['date'] = list(df.index)
+            dic['high'] = list(df.High[col].values)
+            dic['low'] = list(df.Low[col].values)
+            data.append(dic)
+    else:
+        dic = {'stock': lStocks[0]}
+        dic['close'] = list(df.Close.values)
+        dic['open'] = list(df.Open.values)
         dic['date'] = list(df.index)
-        dic['high'] = list(df.High[col].values)
-        dic['low'] = list(df.Low[col].values)
+        dic['high'] = list(df.High.values)
+        dic['low'] = list(df.Low.values)
         data.append(dic)
+
     # else:
     #     tickers = yf.Tickers(lStocks)
     #     df = tickers.history(start=start, end=end)

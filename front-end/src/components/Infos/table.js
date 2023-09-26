@@ -5,15 +5,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import  './table.css'
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
 
-const head = (stockData, fav)=>{
-    console.log(fav);
+const head = (stockData, fav, clickAction)=>{
     if (stockData.data) {
         
         return(
             Object.keys(stockData.data[0]).map((col)=>{
                 return (
                     <th key={col} className='text-center'>
-                        {col}{col==='info'? '': <FontAwesomeIcon icon={fav[col]?fav[col]:faHeart} style={{color:'red'}} />}
+                        {col}{col==='info'? '': <FontAwesomeIcon onClick={clickAction} icon={fav[col]?fav[col]:faHeart} style={{color:'red'}} />}
                     </th>
                 )
             })
@@ -43,7 +42,7 @@ export default function StockInfoTable(props) {
     return(
         <Table className='table tabelWidth' hover={true} striped={true}>
             <thead>
-                {head(props.stockData, props.fav)}
+                {head(props.stockData, props.fav, props.clickAction)}
             </thead>
             <tbody>
                 {body(props.stockData)}
