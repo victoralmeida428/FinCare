@@ -137,3 +137,24 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+CORS_ALLOW_ALL_ORIGINS = False  # Defina como False para não permitir o uso de '*' no cabeçalho
+CORS_ALLOW_CREDENTIALS = True  # Permitir credenciais (cookies, autenticação)
+CORS_ALLOW_HEADERS = (
+    'x-csrftoken',
+    'Authorization',
+    'Content-Type',
+)
+CSRF_TRUSTED_ORIGINS = ['http://localhost:3000']
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+SESSION_CACHE_ALIAS = "default"

@@ -5,7 +5,7 @@ from rest_framework import generics
 from .models import WalletModel
 from .serializer import *
 from django.contrib.auth.models import User
-from rest_framework.permissions import IsAuthenticated
+from rest_framework import permissions
 
 def patternStocks(stocks):
     stocks = stocks.upper().replace('_ACENTO_', '^').replace('_PONTO_','.').replace(',', '-').replace(' ', '-')
@@ -78,13 +78,15 @@ def info_stocks(request, stocks):
 
 class ListWalletStocks(generics.ListAPIView): 
     def get_queryset(self):
-        queryset = WalletModel.objects.filter(username_id=self.kwargs['pk'])
+        print(self.request.user)
+        queryset = WalletModel.objects.filter(username__username=self.request.user)
         return queryset
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
     serializer_class = ListStockSerializer
 
 class DeleteWalletStocks(generics.DestroyAPIView):
     serializer_class = ListStockSerializer
+    permission_classes = [permissions.IsAuthenticated]
     
     def get_queryset(self):
         return super().get_serializer().Meta.model.objects.filter(username_id=self.kwargs['pk'])

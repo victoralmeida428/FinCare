@@ -68,7 +68,7 @@ function HomePage(props) {
         <div className='font'>
             <Menu />
             <Stack className='mt-5' direction='horizontal' gap={5} >
-                <Formulario fields={inputs} btn={false} />
+                <Formulario method='GET' fields={inputs} btn={false} />
             </Stack>
             <Row>
                     <GetInfos stocks={stock} />

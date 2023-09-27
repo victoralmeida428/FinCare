@@ -9,10 +9,7 @@ function NavCustomLink(props) {
             <NavLink
                 key={props.url}
                 className='link'
-                href={props.url}
-                onClick={() => {
-                    props.active(props.url)
-                }}>
+                href={props.url}>
                 {props.children}
             </NavLink>
         </NavItem>

@@ -26,10 +26,10 @@ export default function GetInfos(props) {
 
     async function getFav() {
         try {
-          const response = await axios.get('http://127.0.0.1:8000/user/1/stocks');
+          const response = await axios.get('http://127.0.0.1:8000/user/stocks');
           const stocks_fav = response.data.map((e) => e.stock);
           const stocks = Object.keys(data.data[0]);
-      
+          console.log('fav', response.data);
           var dados = {};
           stocks.map((s) => {
             dados[s] = stocks_fav.includes(s) ? solidHeart : regHeart;
@@ -44,7 +44,7 @@ export default function GetInfos(props) {
     const favClick = (e)=>{
       const svg = e.target.tagName=='path'?e.target.parentElement:e.target
       const stock = svg.parentElement.innerText
-      console.log()
+      console.log(stock)
     }
     useEffect(()=>{getFav()}, [url, error])
     useEffect(()=>{getInfo()}, [url, error])

@@ -6,5 +6,5 @@ class WalletModel(models.Model):
     stock = models.CharField(max_length=50)
 
     def __str__(self) -> str:
-        return {self.id: self.stock}
+        return f'{self.id}: {self.stock}'
 
